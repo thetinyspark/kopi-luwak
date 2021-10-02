@@ -1,8 +1,8 @@
 # Dependency directories
 node_modules/
 
-# output
-dist/
+#coverage
+coverage/
 
 #docs
 docs/

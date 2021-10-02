@@ -1,7 +1,9 @@
 {
   "include": ["lib"],
   "compilerOptions": {
-    "target": "es5",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "target": "es2020",
     "module": "commonjs",
     "declaration": true,
     "outDir": "./dist",
@@ -9,9 +11,9 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "types": [
-      "@types/jasmine",
-      "@types/node"
-    ],
-  }
+        "types": [
+          "jasmine",
+          "node"
+        ]
+}
 }

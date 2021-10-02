@@ -2,8 +2,12 @@
   "include": ["lib", "test"],
   "exclude": ["lib/index.ts"],
   "compilerOptions": {
-    "target": "es2015",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "target": "es5",
     "module": "commonjs",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
     "declaration": true,
     "outDir": "./dist",
     "strict": false,
@@ -11,8 +15,8 @@
       "node_modules/@types"
     ],
     "types": [
-      "@types/jasmine",
-      "@types/node"
-    ],
+      "jasmine",
+      "node"
+    ]
   }
 }

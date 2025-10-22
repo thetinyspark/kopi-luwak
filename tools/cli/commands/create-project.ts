@@ -24,16 +24,16 @@ export async function createNewProject(projectName: string) {
                 'mediators': {},
                 'models': {},
                 'proxies': {},
+                'stores': {},
                 'services': {},
-                'stores': {}
             },
             'test': {
                 'commands': {},
                 'mediators': {},
                 'models': {},
                 'proxies': {},
+                'stores': {},
                 'services': {},
-                'stores': {}
             }
         };
 
@@ -42,6 +42,7 @@ export async function createNewProject(projectName: string) {
         await createPackageJson(projectPath, projectName);
         await initGit(projectPath);
         await installDependencies(projectPath);
+        await createCommand(projectPath);
         
         console.log(`Project ${projectName} created successfully!`);
         console.log('To get started:');
@@ -68,17 +69,26 @@ async function copyTemplates(projectPath: string) {
     // Copy AppEvents.ts template
     const eventsTemplate = path.resolve(__dirname, '../templates/AppEvents.ts.template');
     const eventsDestination = path.join(projectPath, 'src/config/AppEvents.ts');
+
     await fs.copy(eventsTemplate, eventsDestination);
 
     // Create main.ts with basic setup
-    const mainContent = `import { Facade } from "@thetinyspark/kopi-luwak";
+    const mainContent = `
+import { Facade, Container } from "@thetinyspark/kopi-luwak";
 import { START_APP } from "./config/AppEvents";
+
+// Create container
+const container = new Container();
+
+// configure container
+const singleton:boolean = false; // if you need same object everytime or not
+container.register( START_APP, () => new StartAppCommand(), singleton );
 
 // Create main facade instance
 const facade = new Facade();
 
 // Example of registering a command
-// facade.registerCommand(START_APP, () => new StartAppCommand());
+// facade.registerCommand(START_APP, container.get(START_APP));
 
 // Example of sending a notification
 // facade.sendNotification(START_APP, { name: "John Doe" });
@@ -123,6 +133,15 @@ A Kopi Luwak Application
 `;
     
     await fs.writeFile(path.join(projectPath, 'README.md'), readmeContent);
+}
+
+async function createCommand(projectPath:string){
+    try {
+        await execAsync('npx kopi create-command StartApp START_APP', { cwd: projectPath });
+    }
+    catch(error){
+        console.warn('Warning: Could not create StartAppCommand');
+    }
 }
 
 async function createPackageJson(projectPath: string, projectName: string) {

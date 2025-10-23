@@ -40,12 +40,12 @@ export async function createNewProject(projectName: string) {
         await createDirectoryStructure(projectPath, structure);
         await createPackageJson(projectPath, projectName);
         await initGit(projectPath);
-        await installDependencies(projectPath);
         await copyTemplates(projectPath);
         
         console.log(`Project ${projectName} created successfully!`);
         console.log('To get started:');
         console.log(`cd ${projectName}`);
+        console.log('npm install');
         console.log('npm run dev');
     } catch (error) {
         console.error('Error creating project:', error);
@@ -82,15 +82,6 @@ async function copyTemplates(projectPath: string) {
     await fs.copy(mainTemplate, mainDestination);
     await fs.copy(readmeTemplate, readmeDestination);
     await fs.copy(commandTemplate, commandDestination);
-}
-
-async function createCommand(projectPath:string){
-    try {
-        await execAsync('npx kopi create-command StartApp START_APP', { cwd: projectPath });
-    }
-    catch(error){
-        console.warn('Warning: Could not create StartAppCommand');
-    }
 }
 
 async function createPackageJson(projectPath: string, projectName: string) {
@@ -138,15 +129,5 @@ coverage/
         await fs.writeFile(path.join(projectPath, '.gitignore'), gitignore);
     } catch (error) {
         console.warn('Warning: Could not initialize git repository');
-    }
-}
-
-async function installDependencies(projectPath: string) {
-    console.log('Installing dependencies...');
-    try {
-        await execAsync('npm install', { cwd: projectPath });
-    } catch (error) {
-        console.error('Error installing dependencies:', error);
-        throw error;
     }
 }

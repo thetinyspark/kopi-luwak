@@ -1,9 +1,14 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as ejs from 'ejs';
+import { addConst } from './add-const'
 
-export async function createService(name: string) {
+export async function createService(name: string, token:string) {
     try {
+
+        // add token as app keys if not exists
+        addConst(token);
+        
         // Convert name to PascalCase for class name
         const className = `${name.charAt(0).toUpperCase()}${name.slice(1)}Service`;
         
@@ -12,7 +17,7 @@ export async function createService(name: string) {
         const template = await fs.readFile(templatePath, 'utf-8');
         
         // Generate service file content
-        const content = ejs.render(template, { className }, {});
+        const content = ejs.render(template, { className, token }, {});
         
         // Create services directory if it doesn't exist
         const servicesDir = path.resolve(process.cwd(), 'src/services');
@@ -41,30 +46,16 @@ async function updateMainTs(className: string) {
         
         // Add import for the service
         const lastImport = content.lastIndexOf('import');
-        const importStatement = `import { ${className} } from "./services/${className}";\n`;
-        
-        if (lastImport === -1) {
-            content = importStatement + content;
-        } else {
-            const importEnd = content.indexOf('\n', lastImport) + 1;
-            content = content.slice(0, importEnd) + importStatement + content.slice(importEnd);
-        }
-        
-        // Add service registration
-        const registrationStatement = `facade.getContainer().register("${className}", () => new ${className}());\n`;
-        
-        if (!content.includes('facade.getContainer().register')) {
-            // Add after facade creation
-            const facadeCreation = content.indexOf('const facade = new Facade();');
-            if (facadeCreation !== -1) {
-                const insertIndex = content.indexOf('\n', facadeCreation) + 1;
-                content = content.slice(0, insertIndex) + '\n' + registrationStatement + content.slice(insertIndex);
+        const importStatement = `import "./services/${className}";\n`;
+        const detectImport = `import "./services/${className}"`;
+
+        if(!content.includes(detectImport)){
+            if (lastImport === -1) {
+                content = importStatement + content;
+            } else {
+                const importEnd = content.indexOf('\n', lastImport) + 1;
+                content = content.slice(0, importEnd) + importStatement + content.slice(importEnd);
             }
-        } else {
-            // Add after last registration
-            const lastRegistration = content.lastIndexOf('facade.getContainer().register');
-            const insertIndex = content.indexOf('\n', lastRegistration) + 1;
-            content = content.slice(0, insertIndex) + registrationStatement + content.slice(insertIndex);
         }
         
         // Write updated content

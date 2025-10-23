@@ -173,3 +173,9 @@ export default class Facade extends Emitter {
         );
     };
 }
+
+/**
+ * Default root facade instance used by the @Command decorator
+ * This facade is used when no specific facade is provided
+ */
+export const rootFacade:Facade = new Facade();

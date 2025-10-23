@@ -1,0 +1,31 @@
+A Kopi Luwak Application
+
+## Getting Started
+
+1. Install dependencies:
+   \`\`\`bash
+   npm install
+   \`\`\`
+
+2. Start development server:
+   \`\`\`bash
+   npm run dev
+   \`\`\`
+
+## Available Scripts
+
+- \`npm run dev\`: Start development server
+- \`npm run build\`: Build for production
+- \`npm run test\`: Run tests
+- \`npm run kopi\`: Run Kopi Luwak CLI tools
+
+## Project Structure
+
+- \`src/\`: Source code
+  - \`commands/\`: Command implementations
+  - \`config/\`: Configuration files
+  - \`mediators/\`: Mediator implementations
+  - \`models/\`: Model implementations
+  - \`proxies/\`: Proxy implementations
+  - \`services/\`: Service implementations
+  - \`stores/\`: Store implementations

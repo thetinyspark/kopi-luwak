@@ -14,8 +14,8 @@ export async function updateEventsConfig(eventKey: string): Promise<void> {
             content = await fs.readFile(configPath, 'utf-8');
         } catch {
             // If file doesn't exist, create with template
-            content = `export const AppEvents = {} as const;
-export type AppEvent = typeof AppEvents[keyof typeof AppEvents][keyof typeof AppEvents[keyof typeof AppEvents]];`;
+            content = `export const AppConsts = {} as const;
+export type AppEvent = typeof AppConsts[keyof typeof AppConsts][keyof typeof AppConsts[keyof typeof AppConsts]];`;
         }
         
         // Parse event key format (e.g., "USER.CREATED" or "USER_CREATED")

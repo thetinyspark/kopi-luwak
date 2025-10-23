@@ -1,0 +1,13 @@
+import { ICommand, RegisterCommand } from "@thetinyspark/kopi-luwak";
+import { INotification } from "@thetinyspark/tiny-observer";
+import { START_APP } from "../config/AppConsts";
+
+@RegisterCommand({token: START_APP})
+export class StartAppCommand implements ICommand {
+    constructor() {}
+
+    execute(notification: INotification): void {
+        // Add your command logic here
+        console.log(`${this.constructor.name} executed with data:`, notification.getPayload());
+    }
+}

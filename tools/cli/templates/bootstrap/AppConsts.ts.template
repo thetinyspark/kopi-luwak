@@ -1,0 +1,11 @@
+/**
+ * Application constants
+ * This file contains all constants used in the application.
+ * DO NOT MODIFY THIS FILE MANUALLY - Use CLI tools instead.
+ * Add your events here using the CLI tool:
+ * npm run kopi add-const [EVENT_NAME]
+*/
+
+// Example const [event]
+export const START_APP = "START_APP"; 
+

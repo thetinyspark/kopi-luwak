@@ -38,11 +38,10 @@ export async function createNewProject(projectName: string) {
         };
 
         await createDirectoryStructure(projectPath, structure);
-        await copyTemplates(projectPath);
         await createPackageJson(projectPath, projectName);
         await initGit(projectPath);
         await installDependencies(projectPath);
-        await createCommand(projectPath);
+        await copyTemplates(projectPath);
         
         console.log(`Project ${projectName} created successfully!`);
         console.log('To get started:');
@@ -66,73 +65,23 @@ async function createDirectoryStructure(basePath: string, structure: DirectorySt
 }
 
 async function copyTemplates(projectPath: string) {
-    // Copy AppEvents.ts template
-    const eventsTemplate = path.resolve(__dirname, '../templates/AppEvents.ts.template');
-    const eventsDestination = path.join(projectPath, 'src/config/AppEvents.ts');
+    // Copy bootstrap templates
+    const eventsTemplate = path.resolve(__dirname, '../templates/bootstrap/AppConsts.ts.template');
+    const eventsDestination = path.join(projectPath, 'src/config/AppConsts.ts');
+
+    const mainTemplate = path.resolve(__dirname, '../templates/bootstrap/main.ts.template');
+    const mainDestination = path.join(projectPath, 'src/main.ts');
+
+    const readmeTemplate = path.resolve(__dirname, '../templates/bootstrap/README.ts.template');
+    const readmeDestination = path.join(projectPath, 'src/README.md');
+
+    const commandTemplate = path.resolve(__dirname, '../templates/bootstrap/StartAppCommand.ts.template');
+    const commandDestination = path.join(projectPath, 'src/commands/StartAppCommand.ts');
 
     await fs.copy(eventsTemplate, eventsDestination);
-
-    // Create main.ts with basic setup
-    const mainContent = `
-import { Facade, Container } from "@thetinyspark/kopi-luwak";
-import { START_APP } from "./config/AppEvents";
-
-// Create container
-const container = new Container();
-
-// configure container
-const singleton:boolean = false; // if you need same object everytime or not
-container.register( START_APP, () => new StartAppCommand(), singleton );
-
-// Create main facade instance
-const facade = new Facade();
-
-// Example of registering a command
-// facade.registerCommand(START_APP, container.get(START_APP));
-
-// Example of sending a notification
-// facade.sendNotification(START_APP, { name: "John Doe" });
-`;
-    
-    await fs.writeFile(path.join(projectPath, 'src/main.ts'), mainContent);
-    
-    // Create example README
-    const readmeContent = `# ${path.basename(projectPath)}
-
-A Kopi Luwak Application
-
-## Getting Started
-
-1. Install dependencies:
-   \`\`\`bash
-   npm install
-   \`\`\`
-
-2. Start development server:
-   \`\`\`bash
-   npm run dev
-   \`\`\`
-
-## Available Scripts
-
-- \`npm run dev\`: Start development server
-- \`npm run build\`: Build for production
-- \`npm run test\`: Run tests
-- \`npm run kopi\`: Run Kopi Luwak CLI tools
-
-## Project Structure
-
-- \`src/\`: Source code
-  - \`commands/\`: Command implementations
-  - \`config/\`: Configuration files
-  - \`mediators/\`: Mediator implementations
-  - \`models/\`: Model implementations
-  - \`proxies/\`: Proxy implementations
-  - \`services/\`: Service implementations
-  - \`stores/\`: Store implementations
-`;
-    
-    await fs.writeFile(path.join(projectPath, 'README.md'), readmeContent);
+    await fs.copy(mainTemplate, mainDestination);
+    await fs.copy(readmeTemplate, readmeDestination);
+    await fs.copy(commandTemplate, commandDestination);
 }
 
 async function createCommand(projectPath:string){
@@ -148,7 +97,7 @@ async function createPackageJson(projectPath: string, projectName: string) {
     const packageJson = {
         name: projectName,
         version: '1.0.0',
-        description: 'A Kopi-luwak Maker Application',
+        description: 'A Kopi-luwak Application',
         main: 'dist/main.js',
         scripts: {
             dev: 'ts-node src/main.ts',
@@ -156,7 +105,7 @@ async function createPackageJson(projectPath: string, projectName: string) {
             test: 'jest'
         },
         dependencies: {
-            '@thetinyspark/kopi-luwak': 'file:../',
+            '@thetinyspark/kopi-luwak': 'github:thetinyspark/kopi-luwak',
             '@thetinyspark/tiny-observer': '^1.0.0'
         },
         devDependencies: {

@@ -19,7 +19,7 @@ export async function updateFacadeConfig(
         } catch {
             // If file doesn't exist, create with template
             content = `import { Facade } from "@thetinyspark/kopi-luwak";
-import { AppEvents } from "./events.config";
+import { AppConsts } from "./events.config";
 
 export function configureFacade(facade: Facade): void {
     // Commands
@@ -65,7 +65,7 @@ function addComponentRegistration(
     let registration = '';
     switch (type) {
         case 'command':
-            registration = `\n    facade.registerCommand(AppEvents.${eventKey}, () => new ${componentName}());`;
+            registration = `\n    facade.registerCommand(AppConsts.${eventKey}, () => new ${componentName}());`;
             break;
         case 'mediator':
             registration = `\n    facade.registerMediator(new ${componentName}());`;

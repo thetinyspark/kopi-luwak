@@ -1,0 +1,6 @@
+import { rootFacade } from "@thetinyspark/kopi-luwak";
+import * as AppConsts from "./config/AppConsts";
+import "./commands/StartAppCommand";
+
+// Example of sending a notification
+rootFacade.sendNotification(AppConsts.START_APP, { name: "John Doe" });

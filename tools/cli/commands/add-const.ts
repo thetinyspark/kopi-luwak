@@ -26,7 +26,6 @@ export async function addConst(eventName: string) {
         if (!content.includes(formattedEventName)) {
             // Find the last export statement
             const lastExportIndex = content.lastIndexOf('export const');
-            console.log(lastExportIndex);
             if (lastExportIndex === -1) {
                 // No exports yet, add after comments
                 const commentEndIndex = content.indexOf('*/');
@@ -38,7 +37,6 @@ export async function addConst(eventName: string) {
             } else {
                 // Add after last export
                 const insertIndex = content.indexOf(';', lastExportIndex) + 1;
-                console.log("here: ", insertIndex);
                 content = content.slice(0, insertIndex) +"\n"+ eventConstant + content.slice(insertIndex);
             }
             

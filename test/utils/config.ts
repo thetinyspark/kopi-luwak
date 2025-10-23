@@ -7,6 +7,7 @@ import Model from "../../lib/core/model/Model";
 import Proxy from "../../lib/core/model/Proxy";
 import Facade from "../../lib/core/Facade";
 import Injectable from '../../lib/core/ioc/Injectable';
+import Inject from '../../lib/core/ioc/Inject';
 import RegisterCommand from "../../lib/core/ioc/RegisterCommand";
 import RegisterProxy from "../../lib/core/ioc/RegisterProxy";
 import RegisterMediator from "../../lib/core/ioc/RegisterMediator";
@@ -65,6 +66,13 @@ class MyMediator2 extends Mediator{}
 @Injectable({token:INJECTED_SERVICE_TOKEN, container: container, singleton:true})
 @Injectable({token:INJECTED_SERVICE_TOKEN})
 class InjectedService implements IService{};
+
+export class MyClassWithInjectedEntity{
+  constructor( 
+    public service: IService = Inject<IService>({ token: INJECTED_SERVICE_TOKEN, container }) 
+  ){}
+}
+
 
 class MyService implements IService{}
 

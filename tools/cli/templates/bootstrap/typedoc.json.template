@@ -1,0 +1,11 @@
+{
+    "entryPoints": ["./src/main.ts"],
+    "out": "docs",
+    "excludePrivate": true,
+    "excludeProtected": true,
+    "excludeExternals": true,
+    "includeVersion": true,
+    "categorizeByGroup": true,
+    "categoryOrder": ["Core", "IoC", "Model", "View", "Command", "*"],
+    "readme": "README.md"
+}

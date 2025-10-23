@@ -1,5 +1,6 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import * as ejs from 'ejs';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 
@@ -85,34 +86,13 @@ async function copyTemplates(projectPath: string) {
 }
 
 async function createPackageJson(projectPath: string, projectName: string) {
-    const packageJson = {
-        name: projectName,
-        version: '1.0.0',
-        description: 'A Kopi-luwak Application',
-        main: 'dist/main.js',
-        scripts: {
-            dev: 'ts-node src/main.ts',
-            build: 'tsc',
-            test: 'jest'
-        },
-        dependencies: {
-            '@thetinyspark/kopi-luwak': 'github:thetinyspark/kopi-luwak',
-            '@thetinyspark/tiny-observer': '^1.0.0'
-        },
-        devDependencies: {
-            '@types/jest': '^29.0.0',
-            '@types/node': '^20.0.0',
-            'jest': '^29.0.0',
-            'ts-jest': '^29.0.0',
-            'ts-node': '^10.0.0',
-            'typescript': '^5.0.0'
-        }
-    };
+    const templatePath = path.resolve(__dirname, '../templates/bootstrap/package.json.template');
+    const template =  await fs.readFile(templatePath, 'utf-8');
+    const destPath = path.join(projectPath, 'package.json');
+    const output = ejs.render(template, {projectName}, {});
     
-    await fs.writeFile(
-        path.join(projectPath, 'package.json'),
-        JSON.stringify(packageJson, null, 2)
-    );
+    // JSON.stringify(packageJson, null, 2)
+    await fs.writeFile(destPath, output);
 }
 
 async function initGit(projectPath: string) {

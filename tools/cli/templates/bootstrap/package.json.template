@@ -1,0 +1,39 @@
+{
+  "name": "<%= projectName %>",
+  "version": "1.0.0",
+  "description": "A Kopi-luwak Application",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "dev": "ts-node src/main.ts",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && tsc && npx webpack --config webpack.config.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "doc": "typedoc"
+  },
+  "keywords": [
+    "typescript",
+    "webpack"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@thetinyspark/kopi-luwak": "github:thetinyspark/kopi-luwak",
+    "@thetinyspark/tiny-observer": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.8.9",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5",
+    "ts-node": "^10.9.2",
+    "typedoc": "^0.25.3",
+    "typedoc-theme-dark": "0.0.5",
+    "typescript": "^5.2.2",
+    "webpack": "^5.47.0",
+    "webpack-cli": "^4.7.2"
+  }
+}

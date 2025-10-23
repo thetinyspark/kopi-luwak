@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createNewProject = void 0;
 const fs = require("fs-extra");
 const path = require("path");
+const ejs = require("ejs");
 const child_process_1 = require("child_process");
 const util_1 = require("util");
 const execAsync = (0, util_1.promisify)(child_process_1.exec);
@@ -72,30 +73,12 @@ async function copyTemplates(projectPath) {
     await fs.copy(commandTemplate, commandDestination);
 }
 async function createPackageJson(projectPath, projectName) {
-    const packageJson = {
-        name: projectName,
-        version: '1.0.0',
-        description: 'A Kopi-luwak Application',
-        main: 'dist/main.js',
-        scripts: {
-            dev: 'ts-node src/main.ts',
-            build: 'tsc',
-            test: 'jest'
-        },
-        dependencies: {
-            '@thetinyspark/kopi-luwak': 'github:thetinyspark/kopi-luwak',
-            '@thetinyspark/tiny-observer': '^1.0.0'
-        },
-        devDependencies: {
-            '@types/jest': '^29.0.0',
-            '@types/node': '^20.0.0',
-            'jest': '^29.0.0',
-            'ts-jest': '^29.0.0',
-            'ts-node': '^10.0.0',
-            'typescript': '^5.0.0'
-        }
-    };
-    await fs.writeFile(path.join(projectPath, 'package.json'), JSON.stringify(packageJson, null, 2));
+    const templatePath = path.resolve(__dirname, '../templates/bootstrap/package.json.template');
+    const template = await fs.readFile(templatePath, 'utf-8');
+    const destPath = path.join(projectPath, 'package.json');
+    const output = ejs.render(template, { projectName }, {});
+    // JSON.stringify(packageJson, null, 2)
+    await fs.writeFile(destPath, output);
 }
 async function initGit(projectPath) {
     try {

@@ -1,12 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.rootFacade = exports.rootContainer = exports.resolve = exports.RegisterMediator = exports.RegisterProxy = exports.RegisterCommand = exports.Injectable = exports.KopiModule = exports.Facade = exports.Mediator = exports.StoreModel = exports.Proxy = exports.Model = exports.Container = void 0;
+exports.rootFacade = exports.rootContainer = exports.resolve = exports.RegisterMediator = exports.RegisterProxy = exports.RegisterCommand = exports.Inject = exports.Injectable = exports.KopiModule = exports.Facade = exports.Mediator = exports.StoreModel = exports.Proxy = exports.Model = exports.Container = void 0;
 const Container_1 = require("./core/ioc/Container");
 exports.Container = Container_1.default;
 const Container_2 = require("./core/ioc/Container");
 Object.defineProperty(exports, "rootContainer", { enumerable: true, get: function () { return Container_2.rootContainer; } });
 const Injectable_1 = require("./core/ioc/Injectable");
 exports.Injectable = Injectable_1.default;
+const Inject_1 = require("./core/ioc/Inject");
+exports.Inject = Inject_1.default;
 const RegisterCommand_1 = require("./core/ioc/RegisterCommand");
 exports.RegisterCommand = RegisterCommand_1.default;
 const RegisterProxy_1 = require("./core/ioc/RegisterProxy");

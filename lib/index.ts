@@ -3,6 +3,7 @@ import { ICommandFactoryMethod } from "./core/command/ICommand";
 import Container from "./core/ioc/Container";
 import {rootContainer} from "./core/ioc/Container";
 import Injectable from "./core/ioc/Injectable";
+import Inject from "./core/ioc/Inject";
 import RegisterCommand from "./core/ioc/RegisterCommand";
 import RegisterProxy from "./core/ioc/RegisterProxy";
 import RegisterMediator from "./core/ioc/RegisterMediator";
@@ -38,6 +39,7 @@ export {
     KopiModule,
     IKopiModule,
     Injectable, 
+    Inject, 
     RegisterCommand,
     RegisterProxy,
     RegisterMediator,

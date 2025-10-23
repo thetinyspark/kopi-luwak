@@ -59,18 +59,49 @@ async function createDirectoryStructure(basePath, structure) {
 }
 async function copyTemplates(projectPath) {
     // Copy bootstrap templates
-    const eventsTemplate = path.resolve(__dirname, '../templates/bootstrap/AppConsts.ts.template');
-    const eventsDestination = path.join(projectPath, 'src/config/AppConsts.ts');
-    const mainTemplate = path.resolve(__dirname, '../templates/bootstrap/main.ts.template');
-    const mainDestination = path.join(projectPath, 'src/main.ts');
-    const readmeTemplate = path.resolve(__dirname, '../templates/bootstrap/README.ts.template');
-    const readmeDestination = path.join(projectPath, 'src/README.md');
-    const commandTemplate = path.resolve(__dirname, '../templates/bootstrap/StartAppCommand.ts.template');
-    const commandDestination = path.join(projectPath, 'src/commands/StartAppCommand.ts');
-    await fs.copy(eventsTemplate, eventsDestination);
-    await fs.copy(mainTemplate, mainDestination);
-    await fs.copy(readmeTemplate, readmeDestination);
-    await fs.copy(commandTemplate, commandDestination);
+    const templates = [
+        {
+            from: '../templates/bootstrap/AppConsts.ts.template',
+            to: 'src/config/AppConsts.ts'
+        },
+        {
+            from: '../templates/bootstrap/main.ts.template',
+            to: 'src/main.ts'
+        },
+        {
+            from: '../templates/bootstrap/README.ts.template',
+            to: './README.md'
+        },
+        {
+            from: '../templates/bootstrap/StartAppCommand.ts.template',
+            to: 'src/commands/StartAppCommand.ts'
+        },
+        {
+            from: '../templates/bootstrap/jest.config.js.template',
+            to: './jest.config.js'
+        },
+        {
+            from: '../templates/bootstrap/tsconfig.json.template',
+            to: './tsconfig.json'
+        },
+        {
+            from: '../templates/bootstrap/tsconfig.spec.json.template',
+            to: './tsconfig.spec.json'
+        },
+        {
+            from: '../templates/bootstrap/typedoc.json.template',
+            to: './typedoc.json'
+        },
+        {
+            from: '../templates/bootstrap/webpack.config.js.template',
+            to: './webpack.config.js'
+        },
+    ];
+    await Promise.all(templates.map(async (current) => {
+        const from = path.resolve(__dirname, current.from);
+        const to = path.join(projectPath, current.to);
+        await fs.copy(from, to);
+    }));
 }
 async function createPackageJson(projectPath, projectName) {
     const templatePath = path.resolve(__dirname, '../templates/bootstrap/package.json.template');
